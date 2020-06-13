@@ -12,8 +12,17 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
+if [[ -z "$START_CONTENT" ]]; then
+  curl -H 'Content-Type: multipart/form-data' \
+    -X POST \
+    -F "content=$START_CONTENT" \
+    $DISCORD_WEBHOOK
+fi
+
 for f in $@; do
   curl -H 'Content-Type: multipart/form-data' \
-  -X POST \
-  -F "file=@$f" $DISCORD_WEBHOOK
+    -X POST \
+    -F "file=@$f" \
+    -F "content=$INLINE_CONTENT" \
+    $DISCORD_WEBHOOK
 done
